@@ -1,4 +1,4 @@
-import 'package:fresh_petals/widgets/product_card.dart';
+﻿import 'package:fresh_petals/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fresh_petals/pages/home_screen.dart';
 import 'package:fresh_petals/pages/profile_screen.dart';
@@ -6,9 +6,12 @@ import 'package:fresh_petals/pages/categories_screen.dart';
 import 'package:fresh_petals/pages/cart_screen.dart';
 import 'package:fresh_petals/widgets/custom_app_bar.dart';
 import 'package:fresh_petals/pages/favorite_screen.dart';
+import 'package:fresh_petals/models/user.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final User? currentUser;
+  
+  const HomePage({super.key, this.currentUser});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -46,7 +49,7 @@ class _HomePageState extends State<HomePage> {
       const CategoriesScreen(),
       const CartScreen(),
       const FavoriteScreen(),
-      const ProfileScreen(),
+      ProfileScreen(currentUser: widget.currentUser),
     ];
   }
 

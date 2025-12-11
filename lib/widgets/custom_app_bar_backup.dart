@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fresh_petals/services/supabase_service.dart';
-import 'package:fresh_petals/pages/login_screen.dart';
 
 class CustomAppBar extends StatefulWidget {
   final String city;
@@ -14,67 +12,11 @@ class CustomAppBar extends StatefulWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   final TextEditingController _searchController = TextEditingController();
-  final _supabaseService = SupabaseService.instance;
 
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  Future<void> _logout() async {
-    // Show confirmation dialog
-    final shouldLogout = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            child: const Text('Logout', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-
-    if (shouldLogout == true && mounted) {
-      try {
-        // Sign out from Supabase
-        await _supabaseService.signOut();
-        if (mounted) {
-          // Navigate to login screen and remove all previous routes
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-            (route) => false,
-          );
-          
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Logged out successfully'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Logout failed: ${e.toString()}'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    }
   }
 
   @override
@@ -108,7 +50,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 IconButton(
                   icon: const Icon(Icons.logout, size: 24, color: Colors.deepPurple),
                   tooltip: 'Logout',
-                  onPressed: _logout,
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                  },
                 ),
               ],
             ),

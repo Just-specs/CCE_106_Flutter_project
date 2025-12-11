@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:fresh_petals/models/my_products.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:fresh_petals/models/product.dart';
+import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/widgets/product_card.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -10,9 +11,9 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-    String searchText = '';
-    String sortBy = 'Default';
-    final List<String> sortOptions = ['Default', 'Price: Low to High', 'Price: High to Low', 'Name: A-Z', 'Name: Z-A'];
+  String searchText = '';
+  String sortBy = 'Default';
+  final List<String> sortOptions = ['Default', 'Price: Low to High', 'Price: High to Low', 'Name: A-Z', 'Name: Z-A'];
   int selectedOccasion = 0;
   final List<String> occasions = [
     'All Products',
@@ -22,6 +23,48 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     'Gift',
     'Mothersday',
   ];
+
+  List<Product> _products = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    try {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+
+      final productsData = await SupabaseService.instance.getAllProducts();
+      
+      setState(() {
+        _products = productsData.map((data) {
+          return Product(
+            id: data['id'] as int,
+            name: data['name'] as String,
+            category: data['category'] as String,
+            image: data['image'] as String,
+            description: data['description'] as String,
+            price: (data['price'] as num).toDouble(),
+            quantity: data['quantity'] as int? ?? 1,
+            isFavorite: false,
+          );
+        }).toList();
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load products: $e';
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +200,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                     ],
                   ),
-                  child: _buildOccasionProducts(),
+                  child: _buildContent(),
                 ),
               ),
             ],
@@ -167,17 +210,60 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     );
   }
 
-  Widget _buildOccasionProducts() {
-    List products;
-    if (selectedOccasion == 0) {
-      products = MyProducts.allProducts;
-    } else {
-      products = MyProducts.allProducts.where((p) => p.category == occasions[selectedOccasion]).toList();
+  Widget _buildContent() {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.deepPurple,
+        ),
+      );
     }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(
+              _error!,
+              style: const TextStyle(color: Colors.red),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadProducts,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return _buildOccasionProducts();
+  }
+
+  Widget _buildOccasionProducts() {
+    List<Product> products = _products;
+
+    // Filter by category
+    if (selectedOccasion > 0) {
+      products = products.where((p) => p.category == occasions[selectedOccasion]).toList();
+    }
+
     // Filter by search
     if (searchText.isNotEmpty) {
-      products = products.where((p) => p.name.toLowerCase().contains(searchText.toLowerCase())).toList();
+      products = products.where((p) => 
+        p.name.toLowerCase().contains(searchText.toLowerCase()) ||
+        p.description.toLowerCase().contains(searchText.toLowerCase())
+      ).toList();
     }
+
     // Sort
     if (sortBy == 'Price: Low to High') {
       products.sort((a, b) => a.price.compareTo(b.price));
@@ -188,6 +274,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     } else if (sortBy == 'Name: Z-A') {
       products.sort((a, b) => b.name.compareTo(a.name));
     }
+
+    if (products.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.search_off, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            Text(
+              searchText.isNotEmpty 
+                ? 'No products found for "$searchText"'
+                : 'No products available in this category',
+              style: const TextStyle(color: Colors.grey, fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,

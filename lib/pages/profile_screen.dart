@@ -1,22 +1,32 @@
-
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fresh_petals/pages/address_book_screen.dart';
+import 'package:fresh_petals/models/user.dart';
 import 'orders_screen.dart';
 import 'reminders_screen.dart';
 import 'contact_us_screen.dart';
 import 'manage_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final User? currentUser;
+  
+  const ProfileScreen({super.key, this.currentUser});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String name = "Reon Depacaquibo";
+  late String name;
+  late String email;
   String phone = "+63 970 247 4515";
-  String email = "reon@email.com";
+  
+  @override
+  void initState() {
+    super.initState();
+    name = widget.currentUser?.fullName ?? "Guest User";
+    email = widget.currentUser?.email ?? "guest@email.com";
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -25,7 +35,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // User Info Card
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
               elevation: 6,
@@ -39,45 +48,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       backgroundColor: Color(0xFF00BFAE),
                       child: Icon(Icons.person, size: 38, color: Colors.white),
                     ),
-                    const SizedBox(width: 18),
+                    const SizedBox(width: 20),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Color(0xFF212121))),
-                          const SizedBox(height: 6),
-                          Text(phone, style: const TextStyle(fontSize: 15, color: Color(0xFF757575))),
-                          const SizedBox(height: 4),
-                          Text(email, style: const TextStyle(fontSize: 15, color: Color(0xFF757575))),
-                          const SizedBox(height: 10),
-                          TextButton.icon(
-                            onPressed: () async {
-                              final result = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ManageProfileScreen(
-                                    name: name,
-                                    phone: phone,
-                                    email: email,
-                                  ),
-                                ),
-                              );
-                              if (result != null && result is Map<String, String>) {
-                                setState(() {
-                                  name = result['name'] ?? name;
-                                  phone = result['phone'] ?? phone;
-                                  email = result['email'] ?? email;
-                                });
-                              }
-                            },
-                            icon: const Icon(Icons.edit, size: 18, color: Color(0xFF00BFAE)),
-                            label: const Text('Edit Profile', style: TextStyle(color: Color(0xFF00BFAE))),
-                            style: TextButton.styleFrom(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              minimumSize: Size(0, 32),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          Text(
+                            name,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF212121),
                             ),
                           ),
+                          const SizedBox(height: 4),
+                          Text(
+                            phone,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF757575),
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            email,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF757575),
+                            ),
+                          ),
+                          if (widget.currentUser != null) ...[
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: widget.currentUser!.role == 'admin'
+                                    ? Colors.red.shade100
+                                    : Colors.blue.shade100,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                widget.currentUser!.role.toUpperCase(),
+                                style: TextStyle(
+                                  color: widget.currentUser!.role == 'admin'
+                                      ? Colors.red.shade700
+                                      : Colors.blue.shade700,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
@@ -86,69 +110,125 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 28),
-            // Actions Card
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              elevation: 3,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: const Icon(Icons.location_on, color: Color(0xFF448AFF)),
-                      title: const Text('Address Book', style: TextStyle(color: Color(0xFF212121), fontWeight: FontWeight.bold)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFFBDBDBD)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AddressBookScreen()),
-                        );
-                      },
-                    ),
-                    Divider(height: 1, color: Color(0xFFF5F5F5)),
-                    ListTile(
-                      leading: const Icon(Icons.shopping_bag, color: Color(0xFFFFB300)),
-                      title: const Text('Orders', style: TextStyle(color: Color(0xFF212121), fontWeight: FontWeight.bold)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFFBDBDBD)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const OrdersScreen()),
-                        );
-                      },
-                    ),
-                    Divider(height: 1, color: Color(0xFFF5F5F5)),
-                    ListTile(
-                      leading: const Icon(Icons.alarm, color: Color(0xFF00BFAE)),
-                      title: const Text('Reminders', style: TextStyle(color: Color(0xFF212121), fontWeight: FontWeight.bold)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFFBDBDBD)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const RemindersScreen()),
-                        );
-                      },
-                    ),
-                    Divider(height: 1, color: Color(0xFFF5F5F5)),
-                    ListTile(
-                      leading: const Icon(Icons.contact_mail, color: Color(0xFF448AFF)),
-                      title: const Text('Contact Us', style: TextStyle(color: Color(0xFF212121), fontWeight: FontWeight.bold)),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFFBDBDBD)),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ContactUsScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+
+            Text(
+              'Profile',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF212121),
               ),
             ),
-            // ...existing code...
+            const SizedBox(height: 12),
+            _buildProfileOption(
+              context,
+              icon: Icons.person_outline,
+              label: 'Manage Profile',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ManageProfileScreen(
+                      name: name,
+                      phone: phone,
+                      email: email,
+                    ),
+                  ),
+                );
+              },
+            ),
+            _buildProfileOption(
+              context,
+              icon: Icons.location_on_outlined,
+              label: 'Address Book',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const AddressBookScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+
+            Text(
+              'My Orders',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF212121),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildProfileOption(
+              context,
+              icon: Icons.shopping_bag_outlined,
+              label: 'Orders',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OrdersScreen()),
+                );
+              },
+            ),
+            _buildProfileOption(
+              context,
+              icon: Icons.notifications_outlined,
+              label: 'Reminders',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const RemindersScreen()),
+                );
+              },
+            ),
+            const SizedBox(height: 24),
+
+            Text(
+              'Support',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF212121),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildProfileOption(
+              context,
+              icon: Icons.help_outline,
+              label: 'Contact Us',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactUsScreen()),
+                );
+              },
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileOption(BuildContext context,
+      {required IconData icon, required String label, required VoidCallback onTap}) {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Color(0xFFE0F7FA),
+          child: Icon(icon, color: Color(0xFF00BFAE)),
+        ),
+        title: Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF212121),
+          ),
+        ),
+        trailing: Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF757575)),
+        onTap: onTap,
       ),
     );
   }
