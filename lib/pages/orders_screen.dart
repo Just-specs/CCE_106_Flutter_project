@@ -51,7 +51,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
             child: ListTile(
               title: Text('Order #${order['id']}'),
               subtitle: Text(order['item'] ?? ''),
-              trailing: Text(order['status'] ?? '', style: TextStyle(color: order['status'] == 'Delivered' ? Colors.green : Colors.orange)),
+              trailing: Text(order['status'] ?? '', style: TextStyle(color: order['status'] == 'Delivered' ? Color.fromARGB(255, 53, 145, 102) : Colors.orange)),
               onTap: () => _showOrderDetails(order),
             ),
           );

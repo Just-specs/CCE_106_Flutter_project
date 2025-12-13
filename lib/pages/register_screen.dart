@@ -4,7 +4,6 @@ import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/pages/login_screen.dart';
 import 'package:fresh_petals/home_page.dart';
 import 'package:fresh_petals/admin/admin_home.dart';
-import 'package:fresh_petals/models/user.dart' as app_user;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class RegisterScreen extends StatefulWidget {
@@ -112,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (!mounted) return;
         
         // Show success message
-        _showSnackBar('Account created successfully! Please check your email to verify.', Colors.green);
+        _showSnackBar('Account created successfully! Please check your email to verify.', Color(0xFFE6E6FA)); // Lavender
         
         // Wait a moment then navigate to login or home
         await Future.delayed(const Duration(seconds: 2));
@@ -211,7 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       CircleAvatar(
                         radius: 36,
                         backgroundColor: Color(0xFFE0E0E0),
-                        child: Icon(Icons.local_florist, size: 48, color: Color(0xFF00BFAE)),
+                        child: Icon(Icons.local_florist, size: 48, color: Color(0xFFE6E6FA)), // Lavender
                       ),
                       const SizedBox(height: 22),
                       Text('Create Account', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF212121))),
@@ -230,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hintText: 'Full Name',
                           filled: true,
                           fillColor: Color(0xFFF5F5F5),
-                          prefixIcon: Icon(Icons.person, color: Color(0xFF00BFAE)),
+                          prefixIcon: Icon(Icons.person, color: Color(0xFFE6E6FA)), // Lavender
                         ),
                         enabled: !isLoading,
                       ),
@@ -247,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hintText: 'Email',
                           filled: true,
                           fillColor: Color(0xFFF5F5F5),
-                          prefixIcon: Icon(Icons.email, color: Color(0xFF00BFAE)),
+                          prefixIcon: Icon(Icons.email, color: Color(0xFFE6E6FA)), // Lavender
                         ),
                         keyboardType: TextInputType.emailAddress,
                         enabled: !isLoading,
@@ -265,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hintText: 'Password',
                           filled: true,
                           fillColor: Color(0xFFF5F5F5),
-                          prefixIcon: Icon(Icons.lock, color: Color(0xFF00BFAE)),
+                          prefixIcon: Icon(Icons.lock, color: Color(0xFFE6E6FA)), // Lavender
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -294,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           hintText: 'Confirm Password',
                           filled: true,
                           fillColor: Color(0xFFF5F5F5),
-                          prefixIcon: Icon(Icons.lock_outline, color: Color(0xFF00BFAE)),
+                          prefixIcon: Icon(Icons.lock_outline, color: Color(0xFFE6E6FA)), // Lavender
                           suffixIcon: IconButton(
                             icon: Icon(
                               _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -318,7 +317,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: ElevatedButton(
                           onPressed: isLoading ? null : _register,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00BFAE),
+                            backgroundColor: const Color(0xFFE6E6FA), // Lavender
                             foregroundColor: Colors.white,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -357,7 +356,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
                             height: 24,
                             errorBuilder: (context, error, stackTrace) =>
-                                Icon(Icons.login, color: Color(0xFF00BFAE)),
+                                Icon(Icons.login, color: Color(0xFFE6E6FA)), // Lavender
                           ),
                           label: Text('Continue with Google', style: TextStyle(color: Color(0xFF212121), fontWeight: FontWeight.bold)),
                           style: OutlinedButton.styleFrom(
@@ -381,7 +380,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 MaterialPageRoute(builder: (context) => const LoginScreen()),
                               );
                             },
-                            child: Text('Sign In', style: TextStyle(color: Color(0xFF00BFAE), fontWeight: FontWeight.bold)),
+                            child: Text('Sign In', style: TextStyle(color: Color(0xFFE6E6FA), fontWeight: FontWeight.bold)), // Lavender
                           ),
                         ],
                       ),

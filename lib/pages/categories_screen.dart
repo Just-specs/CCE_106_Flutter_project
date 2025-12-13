@@ -111,16 +111,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 22),
                         decoration: BoxDecoration(
-                          color: isSelected ? Color(0xFF00BFAE) : Color(0xFFF5F5F5),
+                          color: isSelected ? Color(0xFFE6E6FA) : Color(0xFFF5F5F5), // Lavender
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: isSelected
-                              ? [BoxShadow(color: Color(0x2200BFAE), blurRadius: 8, offset: Offset(0, 2))]
+                              ? [BoxShadow(color: Color(0x229575CD), blurRadius: 8, offset: Offset(0, 2))] // Light purple shadow
                               : [],
                         ),
                         child: Text(
                           occasions[index],
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Color(0xFF212121),
+                            color: isSelected ? Color(0xFF7C4DFF) : Color(0xFF212121), // Modern purple for selected text
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -138,7 +138,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Color(0xFF00BFAE)),
+                          prefixIcon: Icon(Icons.search, color: Color(0xFF7C4DFF)), // Modern purple
                           hintText: 'Search',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(28),
@@ -178,7 +178,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         },
                         style: const TextStyle(fontWeight: FontWeight.bold),
                         underline: Container(),
-                        icon: Icon(Icons.arrow_drop_down, color: Color(0xFF00BFAE)),
+                        icon: Icon(Icons.arrow_drop_down, color: Color(0xFF7C4DFF)), // Modern purple
                         dropdownColor: Color(0xFFF5F5F5),
                       ),
                     ),

@@ -32,14 +32,15 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact Us'),
-        backgroundColor: const Color(0xFF448AFF),
+        title: const Text('Contact Us', style: TextStyle(color: Colors.black)),
+        backgroundColor: Color(0xFFE6E6FA), // Lavender
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFB2EBF2), Color(0xFFB3E5FC), Color(0xFFFFF9C4)],
+            colors: [Color(0xFFE6E6FA), Colors.white, Color(0xFFF5F5F5)], // Lavender, white, grey
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -80,7 +81,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 child: ElevatedButton(
                   onPressed: _sendMessage,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF448AFF),
+                    backgroundColor: Color(0xFF7C4DFF), // Modern visible purple
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                     elevation: 3,

@@ -35,8 +35,10 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Address Book'),
-        backgroundColor: const Color(0xFF00BFAE),
+        backgroundColor: Colors.white,
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+        titleTextStyle: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
       ),
       body: Container(
         width: double.infinity,
@@ -45,7 +47,7 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFB2EBF2), Color(0xFFB3E5FC), Color(0xFFFFF9C4)],
+            colors: [Color(0xFFE6E6FA), Colors.white], // Lavender to white
           ),
         ),
         child: Padding(

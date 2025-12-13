@@ -6,7 +6,9 @@ class CustomAppBar extends StatefulWidget {
   final String city;
   final ValueChanged<String>? onCityChanged;
   final ValueChanged<String>? onSearch;
-  const CustomAppBar({super.key, required this.city, this.onCityChanged, this.onSearch});
+  final int cartCount;
+  final VoidCallback? onCartTap;
+  const CustomAppBar({super.key, required this.city, this.onCityChanged, this.onSearch, this.cartCount = 0, this.onCartTap});
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -15,6 +17,14 @@ class CustomAppBar extends StatefulWidget {
 class _CustomAppBarState extends State<CustomAppBar> {
   final TextEditingController _searchController = TextEditingController();
   final _supabaseService = SupabaseService.instance;
+  final List<String> _cities = [
+    'Davao City',
+    'Tagum City',
+    'Panabo City',
+    'Carmen',
+    'Digos City',
+    'Mati City',
+  ];
 
   @override
   void dispose() {
@@ -60,7 +70,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Logged out successfully'),
-              backgroundColor: Colors.green,
+              backgroundColor: Color(0xFFB39DDB),
             ),
           );
         }
@@ -96,28 +106,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   'Fresh Petals',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple.shade400,
+                    color: Color(0xFF7C4DFF),
                     letterSpacing: 1.2,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.logout, size: 24, color: Colors.deepPurple),
-                  tooltip: 'Logout',
-                  onPressed: _logout,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text('Deliver to', style: TextStyle(fontSize: 14, color: Colors.deepPurple.shade300)),
-                const SizedBox(width: 6),
                 Flexible(
                   flex: 3,
                   child: DropdownButtonHideUnderline(
@@ -128,23 +125,69 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       dropdownColor: Colors.deepPurple.shade50,
                       borderRadius: BorderRadius.circular(14),
                       items: [
-                        DropdownMenuItem(value: 'Davao City', child: Text('Davao City')),
-                        DropdownMenuItem(value: 'Manila', child: Text('Manila')),
-                        DropdownMenuItem(value: 'Cebu', child: Text('Cebu')),
+                        ..._cities.map((city) => DropdownMenuItem(
+                              value: city,
+                              child: Text(city),
+                            )),
                       ],
-                      onChanged: (value) {
-                        if (value != null && widget.onCityChanged != null) {
-                          widget.onCityChanged!(value);
-                        }
-                      },
+                      onChanged: widget.onCityChanged as ValueChanged<String?>?,
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                Flexible(
-                  flex: 5,
+                GestureDetector(
+                  onTap: widget.onCartTap,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Icon(Icons.shopping_cart, color: Colors.deepPurple.shade300, size: 28),
+                      if (widget.cartCount > 0)
+                        Positioned(
+                          right: -4,
+                          top: -6,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                            decoration: BoxDecoration(
+                              color: Color(0xFF1565C0), // Blue
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 18,
+                              minHeight: 16,
+                            ),
+                            child: Text(
+                              '${widget.cartCount}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.logout, color: Colors.deepPurple.shade300),
+                  tooltip: 'Logout',
+                  onPressed: _logout,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 32, top: 4),
+                  constraints: BoxConstraints(
+                    maxWidth: MediaQuery.of(context).size.width - 24 > 420 ? 420 : MediaQuery.of(context).size.width - 24,
+                  ),
                   child: Container(
-                    height: 36,
                     decoration: BoxDecoration(
                       color: Colors.deepPurple.shade50,
                       borderRadius: BorderRadius.circular(18),
@@ -158,13 +201,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     ),
                     child: TextField(
                       controller: _searchController,
+                      textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         hintText: 'Search...',
+                        hintStyle: TextStyle(
+                          color: Colors.deepPurple.shade200,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
                         prefixIcon: Icon(Icons.search, color: Colors.deepPurple.shade200, size: 20),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                       ),
-                      style: TextStyle(color: Colors.deepPurple.shade400, fontSize: 14),
+                      style: TextStyle(color: Colors.deepPurple.shade400, fontSize: 16, fontWeight: FontWeight.w500),
                       onSubmitted: (value) {
                         if (widget.onSearch != null) {
                           widget.onSearch!(value);
@@ -173,11 +222,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
-}
+  }
+

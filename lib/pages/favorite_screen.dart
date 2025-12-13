@@ -10,6 +10,9 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+    void _refresh() {
+      setState(() {});
+    }
   @override
   Widget build(BuildContext context) {
     final favoriteProducts = MyProducts.allProducts.where((p) => p.isFavorite).toList();
@@ -56,6 +59,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                         product: favoriteProducts[index],
                         onNavigateTab: null,
                         onAddToCart: null,
+                        onFavoriteChanged: _refresh,
                       ),
                     ),
                   );

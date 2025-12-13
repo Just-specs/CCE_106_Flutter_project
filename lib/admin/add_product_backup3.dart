@@ -224,7 +224,7 @@ class _AddProductState extends State<AddProduct> {
                   
                   // Category Dropdown
                   DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     decoration: InputDecoration(
                       labelText: 'Category',
                       prefixIcon: const Icon(Icons.category),

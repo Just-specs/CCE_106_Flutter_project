@@ -172,6 +172,7 @@ class SupabaseService {
           const Duration(seconds: 2),
           onTimeout: () {
             print('DEBUG: Google sign out timed out (user may not have used Google login)');
+            return null;
           },
         );
         print('DEBUG: Google sign out completed');

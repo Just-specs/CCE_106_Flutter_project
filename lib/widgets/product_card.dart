@@ -7,7 +7,9 @@ class ProductCard extends StatefulWidget {
   final Product product;
   final void Function(int)? onNavigateTab;
   final VoidCallback? onAddToCart;
-  const ProductCard({super.key, required this.product, this.onNavigateTab, this.onAddToCart});
+  final VoidCallback? onFavoriteChanged;
+  final double? imageSize;
+  const ProductCard({super.key, required this.product, this.onNavigateTab, this.onAddToCart, this.onFavoriteChanged, this.imageSize});
 
   static List<Product> cartProducts = [];
 
@@ -33,13 +35,19 @@ class _ProductCardState extends State<ProductCard> {
       isFavorite = !isFavorite;
       widget.product.isFavorite = isFavorite;
     });
+    if (widget.onFavoriteChanged != null) {
+      widget.onFavoriteChanged!();
+    }
   }
 
   void _goToDetails() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => details.DetailsScreen(product: widget.product),
+        builder: (context) => details.DetailsScreen(
+          product: widget.product,
+          onAddToCart: widget.onAddToCart,
+        ),
       ),
     );
   }
@@ -49,20 +57,25 @@ class _ProductCardState extends State<ProductCard> {
     return GestureDetector(
       onTap: _goToDetails,
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        elevation: 3,
+        color: const Color(0xFFE6E6FA),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
                   Center(
-                    child: Image.asset(
-                      widget.product.image,
-                      height: 105,
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        widget.product.image,
+                        fit: BoxFit.cover,
+                        width: widget.imageSize ?? 120,
+                        height: widget.imageSize ?? 120,
+                      ),
                     ),
                   ),
                   Positioned(
@@ -75,55 +88,26 @@ class _ProductCardState extends State<ProductCard> {
                       ),
                       onPressed: () {
                         _toggleFavorite();
-                        // Removed SnackBar for 'Added to Favorites' and 'Go to Favorites' action
-                        // ...removed AlertDialog for 'Added to Favourites!'
                       },
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 6),
-              Text(widget.product.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(widget.product.category,
-                  style: const TextStyle(color: Colors.pink)),
+              Text(
+                widget.product.name,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                widget.product.category,
+                style: const TextStyle(color: Colors.pink, fontSize: 11),
+              ),
               const SizedBox(height: 2),
-              Text('₱${_formatPrice(widget.product.price)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.shopping_cart),
-                    label: const Text('Add to Cart'),
-                    onPressed: () {
-                      if (!ProductCard.cartProducts.contains(widget.product)) {
-                        ProductCard.cartProducts.add(widget.product);
-                        if (widget.onAddToCart != null) {
-                          widget.onAddToCart!();
-                        }
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${widget.product.name} added to cart!'),
-                            backgroundColor: Colors.deepPurple,
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${widget.product.name} is already in cart!'),
-                            backgroundColor: Colors.orange,
-                          ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
-                    ),
-                  ),
-                ],
+              Text(
+                '₱${_formatPrice(widget.product.price)}',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF9575CD)),
               ),
             ],
           ),

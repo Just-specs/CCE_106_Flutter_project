@@ -4,7 +4,6 @@ import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/pages/login_screen.dart';
 import 'package:fresh_petals/home_page.dart';
 import 'package:fresh_petals/admin/admin_home.dart';
-import 'package:fresh_petals/models/user.dart' as app_user;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class RegisterScreen extends StatefulWidget {

@@ -60,11 +60,11 @@ class _ManageProfileScreenState extends State<ManageProfileScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Color(0xFFF3E5F5), Color(0xFFCE93D8), Color(0xFF9575CD)],
+            colors: [Color(0xFFE6E6FA), Colors.white], // Lavender to white
           ),
         ),
         child: Padding(

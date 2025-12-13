@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:fresh_petals/models/my_products.dart';
 import 'package:fresh_petals/models/product.dart';
 import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/widgets/product_card.dart';
@@ -15,52 +16,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Product> _products = [];
-  bool _isLoading = true;
+  bool _isLoading = false;
   String? _error;
 
   @override
   void initState() {
     super.initState();
-    _loadProducts();
   }
 
   Future<void> _loadProducts() async {
-    try {
-      setState(() {
-        _isLoading = true;
-        _error = null;
-      });
-
-      final productsData = await SupabaseService.instance.getAllProducts();
-      
-      setState(() {
-        _products = productsData.map((data) {
-          return Product(
-            id: data['id'] as int,
-            name: data['name'] as String,
-            category: data['category'] as String,
-            image: data['image'] as String,
-            description: data['description'] as String,
-            price: (data['price'] as num).toDouble(),
-            quantity: data['quantity'] as int? ?? 1,
-            isFavorite: false,
-          );
-        }).toList();
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _error = 'Failed to load products: $e';
-        _isLoading = false;
-      });
-    }
+    // No-op: products are now sourced from MyProducts.allProducts
   }
 
   @override
   Widget build(BuildContext context) {
-    // Filter products based on search query
-    final filteredProducts = _products.where((product) {
+    // Filter products based on search query from MyProducts.allProducts
+    final filteredProducts = MyProducts.allProducts.where((product) {
       final query = widget.searchQuery.trim().toLowerCase();
       if (query.isEmpty) return true;
       return product.name.toLowerCase().contains(query) ||
@@ -165,12 +136,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return ProductGrid(
-      products: filteredProducts
+        products: filteredProducts
           .map((product) => ProductCard(
-                product: product,
-                onNavigateTab: widget.onNavigateTab,
-                onAddToCart: widget.onAddToCart,
-              ))
+            product: product,
+            onNavigateTab: widget.onNavigateTab,
+            onAddToCart: widget.onAddToCart,
+            imageSize: 180, // Larger image for HomeScreen
+            ))
           .toList(),
     );
   }

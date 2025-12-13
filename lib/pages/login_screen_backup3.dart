@@ -3,7 +3,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/home_page.dart';
 import 'package:fresh_petals/admin/admin_home.dart';
-import 'package:fresh_petals/models/user.dart' as app_user;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:fresh_petals/pages/register_screen.dart';
 

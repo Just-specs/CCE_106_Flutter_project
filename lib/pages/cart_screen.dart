@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
       subtotal += product.price * (quantities[product.id] ?? 1);
     }
     double total = subtotal + shippingFee;
+    const lavender = Color(0xFFB39DDB);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cart', style: TextStyle(color: Color(0xFF212121))),
@@ -99,7 +100,7 @@ class _CartScreenState extends State<CartScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(product.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF212121))),
-                                        Text('₱${product.price.toStringAsFixed(0)}', style: const TextStyle(color: Color(0xFF00BFAE), fontWeight: FontWeight.bold)),
+                                        Text('₱${product.price.toStringAsFixed(0)}', style: TextStyle(color: lavender, fontWeight: FontWeight.bold)),
                                       ],
                                     ),
                                   ),
@@ -112,7 +113,7 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                       Text('${quantities[product.id] ?? 1}', style: const TextStyle(fontWeight: FontWeight.bold)),
                                       IconButton(
-                                        icon: const Icon(Icons.add, color: Color(0xFF00BFAE)),
+                                        icon: Icon(Icons.add, color: lavender),
                                         onPressed: () => _increment(product.id),
                                       ),
                                     ],
@@ -153,7 +154,7 @@ class _CartScreenState extends State<CartScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Total:', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF212121))),
-                                Text('₱${total.toStringAsFixed(0)}', style: const TextStyle(color: Color(0xFF00BFAE), fontWeight: FontWeight.bold)),
+                                Text('₱${total.toStringAsFixed(0)}', style: TextStyle(color: lavender, fontWeight: FontWeight.bold)),
                               ],
                             ),
                           ],
@@ -171,7 +172,7 @@ class _CartScreenState extends State<CartScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF00BFAE),
+                          backgroundColor: lavender,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           padding: const EdgeInsets.symmetric(vertical: 16),

@@ -45,8 +45,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     CircleAvatar(
                       radius: 32,
-                      backgroundColor: Color(0xFF00BFAE),
-                      child: Icon(Icons.person, size: 38, color: Colors.white),
+                      backgroundColor: Color(0xFFE6E6FA), // Lavender
+                      child: Icon(Icons.person, size: 38, color: Color(0xFF9575CD)), // Light purple icon
                     ),
                     const SizedBox(width: 20),
                     Expanded(
@@ -216,8 +216,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Color(0xFFE0F7FA),
-          child: Icon(icon, color: Color(0xFF00BFAE)),
+          backgroundColor: Color(0xFFE6E6FA), // Lavender
+          child: Icon(icon, color: Color(0xFF9575CD)), // Light purple icon
         ),
         title: Text(
           label,

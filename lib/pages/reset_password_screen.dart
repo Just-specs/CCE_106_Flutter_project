@@ -40,7 +40,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Password updated successfully!'),
-              backgroundColor: Colors.green,
+              backgroundColor: Color(0xFFE6E6FA), // Lavender
             ),
           );
 
@@ -105,7 +105,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         CircleAvatar(
                           radius: 36,
                           backgroundColor: Color(0xFFE0E0E0),
-                          child: Icon(Icons.lock_reset, size: 48, color: Color(0xFF00BFAE)),
+                          child: Icon(Icons.lock_reset, size: 48, color: Color(0xFFE6E6FA)), // Lavender
                         ),
                         const SizedBox(height: 22),
                         Text(
@@ -136,7 +136,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             hintText: 'New Password',
                             filled: true,
                             fillColor: Color(0xFFF5F5F5),
-                            prefixIcon: Icon(Icons.lock, color: Color(0xFF00BFAE)),
+                            prefixIcon: Icon(Icons.lock, color: Color(0xFFE6E6FA)),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscurePassword ? Icons.visibility_off : Icons.visibility,
@@ -174,7 +174,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             hintText: 'Confirm Password',
                             filled: true,
                             fillColor: Color(0xFFF5F5F5),
-                            prefixIcon: Icon(Icons.lock_outline, color: Color(0xFF00BFAE)),
+                            prefixIcon: Icon(Icons.lock_outline, color: Color(0xFFE6E6FA)),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -205,7 +205,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _resetPassword,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF00BFAE),
+                              backgroundColor: const Color(0xFFE6E6FA), // Lavender
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -250,7 +250,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           child: Text(
                             'Back to Login',
                             style: TextStyle(
-                              color: Color(0xFF00BFAE),
+                              color: Color(0xFFE6E6FA), // Lavender
                               fontWeight: FontWeight.bold,
                             ),
                           ),

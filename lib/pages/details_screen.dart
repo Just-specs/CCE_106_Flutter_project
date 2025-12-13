@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fresh_petals/models/product.dart';
 
+import '../widgets/product_card.dart';
+
 class DetailsScreen extends StatefulWidget {
   final Product product;
+  final VoidCallback? onAddToCart;
 
-  const DetailsScreen({super.key, required this.product});
+  const DetailsScreen({super.key, required this.product, this.onAddToCart});
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
@@ -28,13 +31,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final isPortrait = mediaQuery.orientation == Orientation.portrait;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xFFE6E6FA), // Lavender
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Product Details'),
+        title: const Text('Product Details', style: TextStyle(color: Colors.black)),
       ),
       body: SafeArea(
         child: Container(
@@ -44,7 +47,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFFF3E5F5), Color(0xFFCE93D8), Color(0xFF9575CD)],
+              colors: [Color(0xFFE6E6FA), Colors.white, Color(0xFFF5F5F5)], // Lavender, white, grey
             ),
           ),
           child: SingleChildScrollView(
@@ -65,10 +68,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: isPortrait ? mediaQuery.size.width * 0.6 : 240,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.purple.shade100,
+                        color: Color(0xFFE6E6FA), // Lighter lavender
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.deepPurple.withOpacity(0.15),
+                            color: Colors.grey.withOpacity(0.15),
                             blurRadius: 16,
                             offset: const Offset(0, 8),
                           ),
@@ -90,7 +93,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       borderRadius: BorderRadius.circular(28),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.deepPurple.withOpacity(0.08),
+                          color: Colors.grey.withOpacity(0.08),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -156,6 +159,26 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
+                              // Add to cart logic
+                              final cart = ProductCard.cartProducts;
+                              final existing = cart.indexWhere((p) => p.id == widget.product.id);
+                              if (existing == -1) {
+                                // Add a copy with the selected quantity
+                                cart.add(Product(
+                                  id: widget.product.id,
+                                  name: widget.product.name,
+                                  category: widget.product.category,
+                                  image: widget.product.image,
+                                  description: widget.product.description,
+                                  price: widget.product.price,
+                                  quantity: quantity,
+                                  isFavorite: widget.product.isFavorite,
+                                ));
+                              } else {
+                                // Update quantity
+                                cart[existing].quantity += quantity;
+                              }
+                              if (widget.onAddToCart != null) widget.onAddToCart!();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
