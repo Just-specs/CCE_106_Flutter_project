@@ -82,16 +82,33 @@ class _HomePageState extends State<HomePage> {
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Searching for "$query"'),
-                      backgroundColor: Color(0xFF00BFAE),
+                content: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Searching for "$query"'),
+                ),  
+                  backgroundColor: Color.fromARGB(255, 0, 191, 174),
+                    // ...existing code...
                     ),
                   );
                 },
                 cartCount: cartCount,
                 onCartTap: () {
                   setState(() {
-                    currentIndex = 2;
+                    currentIndex = 2; // Go to Cart screen
                   });
+                },
+                onFavoriteTap: () {
+                  setState(() {
+                    currentIndex = 3; // Go to Favourites screen
+                  });
+                },
+                onMessageTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Messages feature coming soon!'),
+                      backgroundColor: Color(0xFF7C4DFF),
+                    ),
+                  );
                 },
               ),
             )
@@ -99,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       body: screens[currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white, // White background
+          color: Colors.white,
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -131,10 +148,9 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(Icons.list, color: currentIndex == 1 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
                 label: 'Categories',
               ),
-              // Cart removed from navigation bar
               BottomNavigationBarItem(
-                icon: SizedBox.shrink(),
-                label: '',
+                icon: Icon(Icons.shopping_cart, color: currentIndex == 2 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                label: 'Cart',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite, color: currentIndex == 3 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),

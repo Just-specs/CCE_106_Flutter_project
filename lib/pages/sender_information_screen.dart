@@ -30,11 +30,34 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
     super.dispose();
   }
 
-  void _setAddress() {
-    // TODO: Implement address selection
-    setState(() {
-      address = 'Sample Address';
-    });
+  void _setAddress() async {
+    final controller = TextEditingController(text: address);
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Set Shipping Address'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: 'Enter shipping address'),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, controller.text.trim()),
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+    if (result != null && result.isNotEmpty) {
+      setState(() {
+        address = result;
+      });
+    }
   }
 
   @override
@@ -100,22 +123,34 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: orderReceiver == 0 ? Colors.deepPurple : Colors.grey[300],
-                      foregroundColor: orderReceiver == 0 ? Colors.white : Colors.black,
+                      backgroundColor: orderReceiver == 0 ? const Color(0xFF7C4DFF) : Colors.white,
+                      foregroundColor: orderReceiver == 0 ? Colors.white : Colors.black87,
+                      elevation: orderReceiver == 0 ? 2 : 0,
+                      side: BorderSide(color: const Color(0xFF7C4DFF), width: 1.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () => setState(() => orderReceiver = 0),
-                    child: const Text('I will receive the order.'),
+                    child: const Text('I will receive the order.', style: TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: orderReceiver == 1 ? Colors.deepPurple : Colors.grey[300],
-                      foregroundColor: orderReceiver == 1 ? Colors.white : Colors.black,
+                      backgroundColor: orderReceiver == 1 ? const Color(0xFF7C4DFF) : Colors.white,
+                      foregroundColor: orderReceiver == 1 ? Colors.white : Colors.black87,
+                      elevation: orderReceiver == 1 ? 2 : 0,
+                      side: BorderSide(color: const Color(0xFF7C4DFF), width: 1.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () => setState(() => orderReceiver = 1),
-                    child: const Text('Someone else will receive the order.'),
+                    child: const Text('Someone else will receive the order.', style: TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],
@@ -128,12 +163,15 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
                 const Icon(Icons.location_on, color: Colors.deepPurple),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(address.isEmpty ? 'Shipping Address' : address),
+                  child: Text(
+                    address.isEmpty ? 'Shipping Address' : address,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 ),
                 TextButton.icon(
                   onPressed: _setAddress,
-                  icon: const Icon(Icons.add),
-                  label: const Text('Set an address'),
+                  icon: const Icon(Icons.add, color: Colors.black),
+                  label: const Text('Set an address', style: TextStyle(color: Colors.black)),
                 ),
               ],
             ),
@@ -142,7 +180,8 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  backgroundColor: Color(0xFF7C4DFF), // Modern visible purple
+                  foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () async {

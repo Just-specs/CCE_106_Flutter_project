@@ -8,7 +8,18 @@ class CustomAppBar extends StatefulWidget {
   final ValueChanged<String>? onSearch;
   final int cartCount;
   final VoidCallback? onCartTap;
-  const CustomAppBar({super.key, required this.city, this.onCityChanged, this.onSearch, this.cartCount = 0, this.onCartTap});
+  final VoidCallback? onFavoriteTap;
+  final VoidCallback? onMessageTap;
+  const CustomAppBar({
+    super.key,
+    required this.city,
+    this.onCityChanged,
+    this.onSearch,
+    this.cartCount = 0,
+    this.onCartTap,
+    this.onFavoriteTap,
+    this.onMessageTap,
+  });
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -89,143 +100,118 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(24),
-            bottomRight: Radius.circular(24),
-          ),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(24),
+          bottomRight: Radius.circular(24),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Fresh Petals',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF7C4DFF),
-                    letterSpacing: 1.2,
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: widget.city,
-                      icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple.shade300, size: 20),
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple.shade400, fontSize: 14),
-                      dropdownColor: Colors.deepPurple.shade50,
-                      borderRadius: BorderRadius.circular(14),
-                      items: [
-                        ..._cities.map((city) => DropdownMenuItem(
-                              value: city,
-                              child: Text(city),
-                            )),
-                      ],
-                      onChanged: widget.onCityChanged as ValueChanged<String?>?,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Fresh Petals',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF7C4DFF),
+                      letterSpacing: 1.2,
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                GestureDetector(
-                  onTap: widget.onCartTap,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(Icons.shopping_cart, color: Colors.deepPurple.shade300, size: 28),
-                      if (widget.cartCount > 0)
-                        Positioned(
-                          right: -4,
-                          top: -6,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                            decoration: BoxDecoration(
-                              color: Color(0xFF1565C0), // Blue
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.white, width: 2),
-                            ),
-                            constraints: const BoxConstraints(
-                              minWidth: 18,
-                              minHeight: 16,
-                            ),
-                            child: Text(
-                              '${widget.cartCount}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
+                ],
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                flex: 3,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: widget.city,
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple, size: 20),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple.shade400, fontSize: 14),
+                    dropdownColor: Colors.deepPurple.shade50,
+                    borderRadius: BorderRadius.circular(14),
+                    items: [
+                      ..._cities.map((city) => DropdownMenuItem(
+                            value: city,
+                            child: Text(city),
+                          )),
                     ],
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.logout, color: Colors.deepPurple.shade300),
-                  tooltip: 'Logout',
-                  onPressed: _logout,
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 32, top: 4),
-                  constraints: BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width - 24 > 420 ? 420 : MediaQuery.of(context).size.width - 24,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.deepPurple.shade50,
-                      borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.deepPurple.shade100.withOpacity(0.4),
-                          blurRadius: 6,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: TextField(
-                      controller: _searchController,
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: 'Search...',
-                        hintStyle: TextStyle(
-                          color: Colors.deepPurple.shade200,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                        prefixIcon: Icon(Icons.search, color: Colors.deepPurple.shade200, size: 20),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                      ),
-                      style: TextStyle(color: Colors.deepPurple.shade400, fontSize: 16, fontWeight: FontWeight.w500),
-                      onSubmitted: (value) {
-                        if (widget.onSearch != null) {
-                          widget.onSearch!(value);
-                        }
-                      },
-                    ),
+                    onChanged: widget.onCityChanged as ValueChanged<String?>?,
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+              const SizedBox(width: 10),
+              Container(
+                width: 150,
+                height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.deepPurple.shade100.withOpacity(0.12),
+                      blurRadius: 2,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: _searchController,
+                  textAlign: TextAlign.left,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    hintStyle: TextStyle(
+                      color: Colors.deepPurple.shade200,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                    ),
+                    prefixIcon: Icon(Icons.search, color: Colors.deepPurple.shade200, size: 15),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  ),
+                  style: TextStyle(color: Colors.deepPurple.shade400, fontSize: 13, fontWeight: FontWeight.w500),
+                  onSubmitted: (value) {
+                    if (widget.onSearch != null) {
+                      widget.onSearch!(value);
+                    }
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.deepPurple.shade100.withOpacity(0.12),
+                      blurRadius: 2,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: IconButton(
+                  icon: Icon(Icons.message, color: Colors.deepPurple.shade300, size: 18),
+                  onPressed: widget.onMessageTap,
+                  padding: EdgeInsets.zero,
+                  splashRadius: 18,
+                  tooltip: 'Messages',
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -29,6 +29,5 @@ flutter:
     - lib/images/debut/
     - lib/images/gift/
     - lib/images/Mothersday/
-    - assets/images/fresh_petal.png
     - .env
 

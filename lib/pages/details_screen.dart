@@ -108,7 +108,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 26,
-                            color: Colors.deepPurple,
+                            color: Color.fromARGB(255, 10, 10, 11),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -116,7 +116,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           widget.product.category,
                           style: const TextStyle(
                             fontSize: 15,
-                            color: Colors.deepPurple,
+                            color: Color.fromARGB(255, 10, 10, 11),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -133,7 +133,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
-                                color: Colors.deepPurple,
+                                color: Color.fromARGB(255, 10, 10, 11),
                               ),
                             ),
                             Row(
@@ -184,7 +184,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   content: Text(
                                     '${widget.product.name} x $quantity added to cart!',
                                   ),
-                                  backgroundColor: Colors.deepPurple,
+                                  backgroundColor: const Color.fromARGB(255, 38, 121, 56),
                                   duration: const Duration(seconds: 2),
                                 ),
                               );

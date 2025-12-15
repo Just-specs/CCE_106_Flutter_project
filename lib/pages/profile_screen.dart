@@ -5,6 +5,8 @@ import 'orders_screen.dart';
 import 'reminders_screen.dart';
 import 'contact_us_screen.dart';
 import 'manage_profile_screen.dart';
+import 'package:fresh_petals/services/supabase_service.dart';
+import 'package:fresh_petals/pages/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User? currentUser;
@@ -104,6 +106,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ],
                       ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.logout, color: Colors.deepPurple.shade300),
+                      tooltip: 'Logout',
+                      onPressed: () async {
+                        final shouldLogout = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Logout'),
+                            content: const Text('Are you sure you want to logout?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                ),
+                                child: const Text('Logout', style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (shouldLogout == true && mounted) {
+                          try {
+                            await SupabaseService.instance.signOut();
+                            if (mounted) {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                (route) => false,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Logged out successfully'),
+                                  backgroundColor: Color(0xFFB39DDB),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Logout failed: \\${e.toString()}'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      },
                     ),
                   ],
                 ),

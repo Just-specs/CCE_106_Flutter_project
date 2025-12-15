@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:fresh_petals/models/order.dart';
+
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -8,24 +11,40 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  final List<Map<String, String>> orders = [
-    {'id': '1001', 'item': 'Bouquet', 'status': 'Delivered'},
-    {'id': '1002', 'item': 'Gift Box', 'status': 'Pending'},
-  ];
-
-  void _showOrderDetails(Map<String, String> order) {
+  void _showOrderDetails(Order order) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Order #${order['id']}'),
+        title: Text('Order #${order.id}'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Item: ${order['item']}'),
-            Text('Status: ${order['status']}'),
+            Text('Item: ${order.item}'),
+            Text('Status: ${order.status}'),
             const SizedBox(height: 8),
-            Text('Details coming soon...'),
+            if (order.status == 'Pending')
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    order.status = 'Delivered';
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('Mark as Received'),
+              ),
+            if (order.status == 'Delivered')
+              Text('Thank you for confirming receipt!', style: TextStyle(color: Colors.green)),
+            if (order.status == 'Pending')
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    order.status = 'Cancelled';
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel Order', style: TextStyle(color: Colors.red)),
+              ),
           ],
         ),
         actions: [
@@ -44,14 +63,25 @@ class _OrdersScreenState extends State<OrdersScreen> {
       appBar: AppBar(title: const Text('Orders')),
       body: ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: orders.length,
+        itemCount: Order.orders.length,
         itemBuilder: (context, index) {
-          final order = orders[index];
+          final order = Order.orders[index];
+          Color statusColor;
+          switch (order.status) {
+            case 'Delivered':
+              statusColor = const Color.fromARGB(255, 53, 145, 102);
+              break;
+            case 'Cancelled':
+              statusColor = Colors.red;
+              break;
+            default:
+              statusColor = Colors.orange;
+          }
           return Card(
             child: ListTile(
-              title: Text('Order #${order['id']}'),
-              subtitle: Text(order['item'] ?? ''),
-              trailing: Text(order['status'] ?? '', style: TextStyle(color: order['status'] == 'Delivered' ? Color.fromARGB(255, 53, 145, 102) : Colors.orange)),
+              title: Text('Order #${order.id}'),
+              subtitle: Text(order.item),
+              trailing: Text(order.status, style: TextStyle(color: statusColor)),
               onTap: () => _showOrderDetails(order),
             ),
           );

@@ -18,6 +18,30 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+    int _rating = 0;
+
+    Widget _buildStarRating() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(5, (index) {
+          return IconButton(
+            icon: Icon(
+              index < _rating ? Icons.star : Icons.star_border,
+              color: Colors.amber,
+              size: 18,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            onPressed: () {
+              setState(() {
+                _rating = index + 1;
+              });
+            },
+          );
+        }),
+      );
+    }
   late bool isFavorite;
 
   String _formatPrice(double price) {
@@ -59,22 +83,31 @@ class _ProductCardState extends State<ProductCard> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         elevation: 3,
-        color: const Color(0xFFE6E6FA),
+        color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
+              const SizedBox(height: 8),
               Stack(
                 children: [
                   Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        widget.product.image,
-                        fit: BoxFit.cover,
-                        width: widget.imageSize ?? 120,
-                        height: widget.imageSize ?? 120,
+                      borderRadius: BorderRadius.circular(12),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 140,
+                          maxHeight: 120,
+                          minWidth: 110,
+                          minHeight: 100,
+                        ),
+                        child: Image.asset(
+                          widget.product.image,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.high,
+                        ),
                       ),
                     ),
                   ),
@@ -85,7 +118,10 @@ class _ProductCardState extends State<ProductCard> {
                       icon: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: isFavorite ? Colors.pink : Colors.grey,
+                        size: 20,
                       ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
                       onPressed: () {
                         _toggleFavorite();
                       },
@@ -93,21 +129,29 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                 ],
               ),
-              const SizedBox(height: 6),
+              const SizedBox(height: 8),
+              _buildStarRating(),
+              const SizedBox(height: 2),
               Text(
                 widget.product.name,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(
                 widget.product.category,
-                style: const TextStyle(color: Colors.pink, fontSize: 11),
+                style: const TextStyle(color: Colors.pink, fontSize: 10),
               ),
-              const SizedBox(height: 2),
-              Text(
-                '₱${_formatPrice(widget.product.price)}',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF9575CD)),
+              const SizedBox(height: 4),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    '₱${_formatPrice(widget.product.price)}',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color.fromARGB(255, 14, 13, 16)),
+                  ),
+                ),
               ),
             ],
           ),

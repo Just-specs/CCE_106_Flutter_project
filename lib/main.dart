@@ -132,8 +132,8 @@ class _AuthStateHandlerState extends State<AuthStateHandler> {
               end: Alignment.bottomRight,
               colors: [
                 Color(0xFFF5F5F5),
-                Color(0xFFE0E0E0),
-                Color(0xFFBDBDBD),
+                Color.fromARGB(255, 177, 175, 175),
+                Color.fromARGB(255, 177, 175, 175),
               ],
             ),
           ),

@@ -1,7 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'package:fresh_petals/models/my_products.dart';
 import 'package:fresh_petals/models/product.dart';
-import 'package:fresh_petals/services/supabase_service.dart';
 import 'package:fresh_petals/widgets/product_card.dart';
 import 'package:fresh_petals/widgets/product_grid.dart';
 
@@ -16,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isLoading = false;
+  final bool _isLoading = false;
   String? _error;
 
   @override
@@ -42,17 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFAFBFBFB), // Soft neutral
-            Color(0xFFE0E0E0), // Light gray
-            Color(0xFFEEEEEE), // Medium gray
-          ],
-        ),
-      ),
+      color: Color(0xFFF5F5F5), // Light grey
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
@@ -61,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Color(0xFFF5F5FF), // Match outer background (very light lavender/grey)
                     borderRadius: BorderRadius.circular(18),
                     boxShadow: [
                       BoxShadow(
@@ -128,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? 'No products available'
                 : 'No products found for "${widget.searchQuery}"',
               style: const TextStyle(color: Colors.grey, fontSize: 16),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.start,
             ),
           ],
         ),
