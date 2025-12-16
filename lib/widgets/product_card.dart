@@ -18,28 +18,45 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-    int _rating = 0;
+    int _rating = 5;
+    int _reviewCount = 11;
 
     Widget _buildStarRating() {
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(5, (index) {
-          return IconButton(
-            icon: Icon(
-              index < _rating ? Icons.star : Icons.star_border,
-              color: Colors.amber,
-              size: 18,
-            ),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            onPressed: () {
+        children: [
+          GestureDetector(
+            onTap: () {
               setState(() {
-                _rating = index + 1;
+                // Example: cycle rating for demo
+                _rating = _rating == 5 ? 4 : 5;
+                _reviewCount = _rating == 5 ? 11 : 8;
               });
             },
-          );
-        }),
+            child: Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 20,
+              shadows: [
+                Shadow(
+                  blurRadius: 2,
+                  color: Colors.black26,
+                  offset: Offset(1, 1),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            _rating.toStringAsFixed(1),
+            style: const TextStyle(fontSize: 14, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            ' ($_reviewCount)',
+            style: const TextStyle(fontSize: 13, color: Colors.grey, fontWeight: FontWeight.w500),
+          ),
+        ],
       );
     }
   late bool isFavorite;
@@ -95,17 +112,17 @@ class _ProductCardState extends State<ProductCard> {
                 children: [
                   Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
-                          maxWidth: 140,
-                          maxHeight: 120,
-                          minWidth: 110,
-                          minHeight: 100,
+                          maxWidth: 180,
+                          maxHeight: 150,
+                          minWidth: 140,
+                          minHeight: 120,
                         ),
                         child: Image.asset(
                           widget.product.image,
-                          fit: BoxFit.contain,
+                          fit: BoxFit.cover,
                           filterQuality: FilterQuality.high,
                         ),
                       ),
@@ -118,7 +135,7 @@ class _ProductCardState extends State<ProductCard> {
                       icon: Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: isFavorite ? Colors.pink : Colors.grey,
-                        size: 20,
+                        size: 22,
                       ),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
@@ -130,8 +147,6 @@ class _ProductCardState extends State<ProductCard> {
                 ],
               ),
               const SizedBox(height: 8),
-              _buildStarRating(),
-              const SizedBox(height: 2),
               Text(
                 widget.product.name,
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
@@ -143,15 +158,19 @@ class _ProductCardState extends State<ProductCard> {
                 style: const TextStyle(color: Colors.pink, fontSize: 10),
               ),
               const SizedBox(height: 4),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    '₱${_formatPrice(widget.product.price)}',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color.fromARGB(255, 14, 13, 16)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '₱${_formatPrice(widget.product.price)}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Color.fromARGB(255, 14, 13, 16)),
+                    ),
                   ),
-                ),
+                  _buildStarRating(),
+                ],
               ),
             ],
           ),

@@ -117,42 +117,41 @@ class _CustomAppBarState extends State<CustomAppBar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'Fresh Petals',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF7C4DFF),
+                      color: Color.fromARGB(255, 99, 87, 133),
                       letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: widget.city,
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple, size: 18),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple.shade400, fontSize: 14),
+                      dropdownColor: Colors.deepPurple.shade50,
+                      borderRadius: BorderRadius.circular(14),
+                      items: [
+                        ..._cities.map((city) => DropdownMenuItem(
+                              value: city,
+                              child: Text(city),
+                            )),
+                      ],
+                      onChanged: widget.onCityChanged as ValueChanged<String?>?,
                     ),
                   ),
                 ],
               ),
               const SizedBox(width: 10),
-              Flexible(
-                flex: 3,
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                    value: widget.city,
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple, size: 20),
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.deepPurple.shade400, fontSize: 14),
-                    dropdownColor: Colors.deepPurple.shade50,
-                    borderRadius: BorderRadius.circular(14),
-                    items: [
-                      ..._cities.map((city) => DropdownMenuItem(
-                            value: city,
-                            child: Text(city),
-                          )),
-                    ],
-                    onChanged: widget.onCityChanged as ValueChanged<String?>?,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 10),
               Container(
-                width: 150,
-                height: 30,
+                width: 170,
+                height: 38,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple.shade50,
                   borderRadius: BorderRadius.circular(12),
@@ -176,7 +175,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     ),
                     prefixIcon: Icon(Icons.search, color: Colors.deepPurple.shade200, size: 15),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   ),
                   style: TextStyle(color: Colors.deepPurple.shade400, fontSize: 13, fontWeight: FontWeight.w500),
                   onSubmitted: (value) {
@@ -187,9 +186,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
               ),
               const SizedBox(width: 8),
+              // ...existing code...
               Container(
-                width: 32,
-                height: 32,
+                width: 38,
+                height: 38,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.deepPurple.shade50,
                   borderRadius: BorderRadius.circular(12),
@@ -202,10 +203,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ],
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.message, color: Colors.deepPurple.shade300, size: 18),
+                  icon: Icon(Icons.message, color: Colors.deepPurple.shade300, size: 20),
                   onPressed: widget.onMessageTap,
                   padding: EdgeInsets.zero,
-                  splashRadius: 18,
+                  splashRadius: 20,
                   tooltip: 'Messages',
                 ),
               ),

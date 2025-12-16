@@ -73,7 +73,7 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
           children: [
             Card(
               child: ListTile(
-                leading: const Icon(Icons.shopping_cart),
+                // Removed cart icon
                 title: const Text('Show Order Summary'),
                 trailing: const Text('₱245.00', style: TextStyle(fontWeight: FontWeight.bold)),
                 onTap: () {
@@ -150,7 +150,7 @@ class _SenderInformationScreenState extends State<SenderInformationScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                     ),
                     onPressed: () => setState(() => orderReceiver = 1),
-                    child: const Text('Someone else will receive the order.', style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: const Text('Someone else', style: TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ],

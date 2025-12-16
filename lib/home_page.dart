@@ -136,28 +136,28 @@ class _HomePageState extends State<HomePage> {
               setState(() => currentIndex = value);
             },
             selectedItemColor: Color(0xFF7C4DFF),
-            unselectedItemColor: Color(0xFF9575CD),
+            unselectedItemColor: Color.fromARGB(255, 135, 134, 137),
             backgroundColor: const Color.fromARGB(255, 248, 246, 246),
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: currentIndex == 0 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                icon: Icon(Icons.home, color: currentIndex == 0 ? Color(0xFF7C4DFF) : Color.fromARGB(255, 135, 134, 137)),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.list, color: currentIndex == 1 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                icon: Icon(Icons.list, color: currentIndex == 1 ? Color(0xFF7C4DFF) :  Color.fromARGB(255, 135, 134, 137)),
                 label: 'Categories',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart, color: currentIndex == 2 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                icon: Icon(Icons.shopping_cart, color: currentIndex == 2 ? Color(0xFF7C4DFF) :  Color.fromARGB(255, 135, 134, 137)),
                 label: 'Cart',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.favorite, color: currentIndex == 3 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                icon: Icon(Icons.favorite, color: currentIndex == 3 ? Color(0xFF7C4DFF) : Color.fromARGB(255, 135, 134, 137)),
                 label: 'Favourites',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person, color: currentIndex == 4 ? Color(0xFF7C4DFF) : Color(0xFF9575CD)),
+                icon: Icon(Icons.person, color: currentIndex == 4 ? Color(0xFF7C4DFF) : Color.fromARGB(255, 135, 134, 137)),
                 label: 'Profile',
               ),
             ],

@@ -172,8 +172,8 @@ class _CartScreenState extends State<CartScreen> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: lavender,
-                          foregroundColor: Colors.white,
+                          backgroundColor: const Color.fromARGB(255, 98, 83, 126),
+                          foregroundColor: const Color.fromARGB(255, 15, 14, 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           elevation: 2,

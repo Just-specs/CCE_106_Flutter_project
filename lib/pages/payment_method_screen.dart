@@ -106,6 +106,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     final newOrder = Order(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       item: 'Order placed at ${DateTime.now().toLocal()}',
+      imageUrl: '', // TODO: Replace with actual product image URL if available
       status: 'Pending',
     );
     Order.addOrder(newOrder);
